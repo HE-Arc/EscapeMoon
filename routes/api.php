@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\SaveController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,6 +37,7 @@ Route::get("/test/{client_secret}", function(Request $request)
 Route::middleware('auth:api')->group(function ()
 {
     Route::post("/logout", [AuthController::class, "logout"]);
+    Route::get("/savedScenarios", [SaveController::class, "fetchSavedScenarios"]);
 });
 
 Route::post("/login", [AuthController::class, "login"]);
