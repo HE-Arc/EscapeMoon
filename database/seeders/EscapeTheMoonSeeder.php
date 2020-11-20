@@ -4,6 +4,8 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use App\Models\Scenario;
+use App\Models\Scene;
 
 class EscapeTheMoonSeeder extends Seeder
 {
@@ -16,12 +18,17 @@ class EscapeTheMoonSeeder extends Seeder
     {
         DB::table('scenarios')->insert([
             'name' => 'Escape the moon',
-            'first_scene_id' => 1,
         ]);
 
+        $scenario = Scenario::where('name', 'Escape the moon')->first();
+
         DB::table('scenes')->insert([
-            'scenario_id' => 1,
+            'scenario_id' => $scenario->id,
             'name' => 'Le dortoir',
         ]);
+
+        $first_scene = Scene::where('name', 'Le dortoir')->first();
+        $scenario->first_scene_id = $first_scene->id;
+        $scenario->save();
     }
 }
