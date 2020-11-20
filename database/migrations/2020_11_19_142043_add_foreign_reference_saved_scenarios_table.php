@@ -14,7 +14,7 @@ class AddForeignReferenceSavedScenariosTable extends Migration
     public function up()
     {
         Schema::table('saved_scenarios', function (Blueprint $table) {
-            $table->foreign('last_scene_id')->references('id')->on('scenes');
+            $table->foreign('last_saved_scene_id')->references('id')->on('saved_scenes');
         });
     }
 
@@ -26,7 +26,7 @@ class AddForeignReferenceSavedScenariosTable extends Migration
     public function down()
     {
         Schema::table('saved_scenarios', function (Blueprint $table) {
-            $table->dropForeign(['last_scene_id']);
+            $table->dropForeign(['last_saved_scene_id']);
         });
     }
 }

@@ -40,7 +40,7 @@ Route::middleware('auth:api')->group(function ()
     Route::post("/logout", [AuthController::class, "logout"]);
     Route::get("/scenarios", [ScenarioController::class, "fetchScenarios"]);
     Route::get("/save", [SaveController::class, "getSaves"]);
-    Route::get("/save/create", [SaveController::class, "createSave"]);
+    Route::post("/save/create", [SaveController::class, "createSave"]);
 });
 
 Route::post("/login", [AuthController::class, "login"]);

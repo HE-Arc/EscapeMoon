@@ -15,12 +15,12 @@ class CreateSavedScenariosTable extends Migration
     {
         Schema::create('saved_scenarios', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('scenario_id');
-            $table->unsignedBigInteger('inventory_id');
-            $table->unsignedBigInteger('last_scene_id');
-            $table->dateTime('creation');
-            $table->dateTime('last_save');
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->unsignedBigInteger('scenario_id')->nullable();
+            $table->unsignedBigInteger('inventory_id')->nullable();
+            $table->unsignedBigInteger('last_saved_scene_id')->nullable();
+            $table->dateTime('creation')->nullable();
+            $table->dateTime('last_save')->nullable();
 
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('scenario_id')->references('id')->on('scenarios');

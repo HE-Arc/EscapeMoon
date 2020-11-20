@@ -15,9 +15,9 @@ class CreateSavedScenesTable extends Migration
     {
         Schema::create('saved_scenes', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('scene_id');
-            $table->unsignedBigInteger('saved_scenario_id');
-            $table->boolean('locked');
+            $table->unsignedBigInteger('scene_id')->nullable();
+            $table->unsignedBigInteger('saved_scenario_id')->nullable();
+            $table->boolean('locked')->default(0);
 
             $table->foreign('scene_id')->references('id')->on('scenes');
             $table->foreign('saved_scenario_id')->references('id')->on('saved_scenarios');

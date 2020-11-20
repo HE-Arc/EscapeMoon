@@ -15,9 +15,9 @@ class CreateCraftsTable extends Migration
     {
         Schema::create('crafts', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('first_item_id');
-            $table->unsignedBigInteger('second_item_id');
-            $table->unsignedBigInteger('result_item_id');
+            $table->unsignedBigInteger('first_item_id')->nullable();
+            $table->unsignedBigInteger('second_item_id')->nullable();
+            $table->unsignedBigInteger('result_item_id')->nullable();
 
             $table->foreign('first_item_id')->references('id')->on('items');
             $table->foreign('second_item_id')->references('id')->on('items');

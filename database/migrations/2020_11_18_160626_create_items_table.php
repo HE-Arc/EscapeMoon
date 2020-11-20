@@ -15,8 +15,8 @@ class CreateItemsTable extends Migration
     {
         Schema::create('items', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('scene_id');
-            $table->string('name');
+            $table->unsignedBigInteger('scene_id')->nullable();
+            $table->string('name')->default("No Name");
             $table->float('position_x')->default(0.0);
             $table->float('position_y')->default(0.0);
 

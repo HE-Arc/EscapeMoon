@@ -15,7 +15,7 @@ class CreateScenariosTable extends Migration
     {
         Schema::create('scenarios', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('name')->default("No Name");
         });
     }
 

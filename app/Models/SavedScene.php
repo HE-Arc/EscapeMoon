@@ -11,4 +11,10 @@ class SavedScene extends Model
 
     protected $table = 'saved_scenes';
     public $timestamps = false;
+
+    protected $fillable = [
+        'scene_id',
+        'saved_scenario_id',
+        'locked',
+    ];
 }

@@ -15,9 +15,9 @@ class CreateSavedItemsTable extends Migration
     {
         Schema::create('saved_items', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('saved_scene_id');
-            $table->unsignedBigInteger('inventory_id');
-            $table->unsignedBigInteger('item_id');
+            $table->unsignedBigInteger('saved_scene_id')->nullable();
+            $table->unsignedBigInteger('inventory_id')->nullable();
+            $table->unsignedBigInteger('item_id')->nullable();
             $table->boolean('picked');
 
             $table->foreign('saved_scene_id')->references('id')->on('saved_scenes');
