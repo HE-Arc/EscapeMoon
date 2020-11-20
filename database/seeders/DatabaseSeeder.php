@@ -4,9 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Database\Seeders\UserSeeder;
-use Database\Seeders\ScenarioSeeder;
-use Database\Seeders\SceneSeeder;
-use Database\Seeders\ItemSeeder;
+use Database\Seeders\EscapeTheMoonSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -19,9 +17,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             UserSeeder::class,
-            ScenarioSeeder::class,
-            SceneSeeder::class,
-            ItemSeeder::class,
+            EscapeTheMoonSeeder::class,
         ]);
     }
 }

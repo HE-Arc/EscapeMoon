@@ -29,6 +29,10 @@ class CreateScenesTable extends Migration
      */
     public function down()
     {
+        Schema::table('scenes', function (Blueprint $table) {
+            $table->dropForeign(['scenario_id']);
+        });
+
         Schema::dropIfExists('scenes');
     }
 }

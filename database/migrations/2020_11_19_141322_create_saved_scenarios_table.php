@@ -35,6 +35,12 @@ class CreateSavedScenariosTable extends Migration
      */
     public function down()
     {
+        Schema::table('saved_scenarios', function (Blueprint $table) {
+            $table->dropForeign(['user_id']);
+            $table->dropForeign(['scenario_id']);
+            $table->dropForeign(['inventory_id']);
+        });
+
         Schema::dropIfExists('saved_scenarios');
     }
 }

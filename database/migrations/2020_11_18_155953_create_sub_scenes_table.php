@@ -32,6 +32,11 @@ class CreateSubScenesTable extends Migration
      */
     public function down()
     {
+        Schema::table('sub_scene', function (Blueprint $table) {
+            $table->dropForeign(['main_scene_id']);
+            $table->dropForeign(['sub_scene_id']);
+        });
+
         Schema::dropIfExists('sub_scene');
     }
 }

@@ -5,10 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Scanario extends Model
+class SavedScenario extends Model
 {
     use HasFactory;
 
-    protected $table = 'scenarios';
+    protected $table = 'saved_scenarios';
     public $timestamps = false;
 }

@@ -32,6 +32,11 @@ class CreateCraftsTable extends Migration
      */
     public function down()
     {
+        Schema::table('crafts', function (Blueprint $table) {
+            $table->dropForeign(['first_item_id']);
+            $table->dropForeign(['second_item_id']);
+            $table->dropForeign(['result_item_id']);
+        });
         Schema::dropIfExists('crafts');
     }
 }

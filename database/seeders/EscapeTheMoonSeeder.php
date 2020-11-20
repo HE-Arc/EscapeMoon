@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class ScenarioSeeder extends Seeder
+class EscapeTheMoonSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -16,6 +16,12 @@ class ScenarioSeeder extends Seeder
     {
         DB::table('scenarios')->insert([
             'name' => 'Escape the moon',
+            'first_scene_id' => 1,
+        ]);
+
+        DB::table('scenes')->insert([
+            'scenario_id' => 1,
+            'name' => 'Le dortoir',
         ]);
     }
 }
