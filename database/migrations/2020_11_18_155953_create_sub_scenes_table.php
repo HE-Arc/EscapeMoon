@@ -15,8 +15,8 @@ class CreateSubScenesTable extends Migration
     {
         Schema::create('sub_scene', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('main_scene_id');
-            $table->unsignedBigInteger('sub_scene_id');
+            $table->unsignedBigInteger('main_scene_id')->nullable();
+            $table->unsignedBigInteger('sub_scene_id')->nullable();
             $table->float('position_x')->default(0.0);
             $table->float('position_y')->default(0.0);
 
@@ -32,6 +32,11 @@ class CreateSubScenesTable extends Migration
      */
     public function down()
     {
+        Schema::table('sub_scene', function (Blueprint $table) {
+            $table->dropForeign(['main_scene_id']);
+            $table->dropForeign(['sub_scene_id']);
+        });
+
         Schema::dropIfExists('sub_scene');
     }
 }
