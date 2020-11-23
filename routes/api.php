@@ -41,6 +41,7 @@ Route::middleware('auth:api')->group(function ()
     Route::get("/scenarios", [ScenarioController::class, "fetchScenarios"]);
     Route::get("/save", [SaveController::class, "getSaves"]);
     Route::post("/save/create", [SaveController::class, "createSave"]);
+    Route::post("/save/delete", [SaveController::class, "deleteSave"]);
 });
 
 Route::post("/login", [AuthController::class, "login"]);
