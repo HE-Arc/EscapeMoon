@@ -68,6 +68,8 @@ class SaveController extends Controller
                 ]);
             }
         }
+
+        return $this->getSaves();
     }
 
     public function deleteSave(Request $request)
@@ -82,5 +84,7 @@ class SaveController extends Controller
 
         SavedScene::where('saved_scenario_id', $saved_scenario->id)->delete();
         SavedScenario::where('id', $request->saved_scenario_id)->delete();
+
+        return $this->getSaves();
     }
 }
