@@ -10,6 +10,8 @@ use App\Models\SavedScene;
 use App\Models\Scenario;
 use App\Models\Scene;
 use App\Models\Inventory;
+use App\Models\Item;
+use App\Models\SavedItem;
 use Illuminate\Support\Facades\Auth;
 
 class SaveController extends Controller
@@ -20,7 +22,7 @@ class SaveController extends Controller
             ->join('scenarios', 'saved_scenarios.scenario_id', 'scenarios.id')
             ->select('scenarios.name', 'saved_scenarios.creation', 'saved_scenarios.last_save')
             ->get();
-        //$saves = SavedScenario::where('user_id', Auth::id())->get();
+
         return response()->json($saves, 200);
     }
 
@@ -54,8 +56,17 @@ class SaveController extends Controller
                 $saved_scenario->save();
                 $saved_scene->save();
             }
-        }
-
         
+            $items = Item::where('scene_id', $scene->id)->get();
+            foreach($items as $item)
+            {
+                $saved_item = SavedItem::create([
+                    'saved_scene_id' => $saved_scene->id,
+                    'inventory_id' => null,
+                    'item_id' => $item->id,
+                    'picked' => false,
+                ]);
+            }
+        }
     }
 }
