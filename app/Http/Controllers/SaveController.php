@@ -20,7 +20,7 @@ class SaveController extends Controller
     {
         $saves = DB::table('saved_scenarios')
             ->join('scenarios', 'saved_scenarios.scenario_id', 'scenarios.id')
-            ->select('scenarios.name', 'saved_scenarios.creation', 'saved_scenarios.last_save')
+            ->select('saved_scenarios.id', 'scenarios.name', 'saved_scenarios.creation', 'saved_scenarios.last_save')
             ->get();
 
         return response()->json($saves, 200);
@@ -68,5 +68,23 @@ class SaveController extends Controller
                 ]);
             }
         }
+
+        return $this->getSaves();
+    }
+
+    public function deleteSave(Request $request)
+    {
+        $saved_scenario = SavedScenario::where('id', $request->saved_scenario_id)->first();
+        $saved_scenario->last_saved_scene_id = null;
+        $saved_scenario->save();
+        $saved_scenes = SavedScene::where('saved_scenario_id', $saved_scenario->id)->get();
+        
+        foreach($saved_scenes as $saved_scene)
+            SavedItem::where('saved_scene_id', $saved_scene->id)->delete();
+
+        SavedScene::where('saved_scenario_id', $saved_scenario->id)->delete();
+        SavedScenario::where('id', $request->saved_scenario_id)->delete();
+
+        return $this->getSaves();
     }
 }
