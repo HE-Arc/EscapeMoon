@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ScenarioController;
 use App\Http\Controllers\SaveController;
+use App\Http\Controllers\GameController;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,6 +42,7 @@ Route::middleware('auth:api')->group(function ()
     Route::get("/scenarios", [ScenarioController::class, "fetchScenarios"]);
     Route::get("/save", [SaveController::class, "getSaves"]);
     Route::post("/save/create", [SaveController::class, "createSave"]);
+    Route::post("/game/resume", [GameController::class, "resume"]);
 });
 
 Route::post("/login", [AuthController::class, "login"]);
