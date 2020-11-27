@@ -4,7 +4,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ScenarioController;
-use App\Http\Controllers\SaveController;
+use App\Http\Controllers\SavedScenarioController;
+use App\Http\Controllers\SavedSceneController;
+use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\GameController;
 
 /*
@@ -40,10 +42,13 @@ Route::middleware('auth:api')->group(function ()
 {
     Route::post("/logout", [AuthController::class, "logout"]);
     Route::get("/scenarios", [ScenarioController::class, "fetchScenarios"]);
-    Route::get("/save", [SaveController::class, "getSaves"]);
-    Route::post("/save/create", [SaveController::class, "createSave"]);
-    Route::post("/save/delete", [SaveController::class, "deleteSave"]);
-    Route::post("/game/resume", [GameController::class, "resume"]);
+    Route::get("/save", [SavedScenarioController::class, "fetch"]);
+    Route::post("/save/create", [SavedScenarioController::class, "create"]);
+    Route::post("/save/delete", [SavedScenarioController::class, "delete"]);
+    Route::post("/save/resume", [SavedScenarioController::class, "resume"]);
+    Route::post("/scene", [SavedSceneController::class, "fetch"]);
+    Route::post("/inventory", [InventoryController::class, "fetch"]);
+    Route::post("/game/click", [GameController::class, "click"]);
 });
 
 Route::post("/login", [AuthController::class, "login"]);

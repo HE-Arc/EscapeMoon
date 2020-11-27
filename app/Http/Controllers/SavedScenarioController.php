@@ -14,9 +14,9 @@ use App\Models\Item;
 use App\Models\SavedItem;
 use Illuminate\Support\Facades\Auth;
 
-class SaveController extends Controller
+class SavedScenarioController extends Controller
 {
-    public function getSaves()
+    public function fetch()
     {
         $saves = DB::table('saved_scenarios')
             ->join('scenarios', 'saved_scenarios.scenario_id', 'scenarios.id')
@@ -26,7 +26,7 @@ class SaveController extends Controller
         return response()->json($saves, 200);
     }
 
-    public function createSave(Request $request)
+    public function create(Request $request)
     {
         $scenario = Scenario::where('id', $request->scenario_id)->first();
         $first_scene = Scene::where('id', $scenario->first_scene_id)->first();
@@ -72,7 +72,7 @@ class SaveController extends Controller
         return $this->getSaves();
     }
 
-    public function deleteSave(Request $request)
+    public function delete(Request $request)
     {
         $saved_scenario = SavedScenario::where('id', $request->saved_scenario_id)->first();
         $saved_scenario->last_saved_scene_id = null;
@@ -86,5 +86,13 @@ class SaveController extends Controller
         SavedScenario::where('id', $request->saved_scenario_id)->delete();
 
         return $this->getSaves();
+    }
+
+    public function resume(Request $request)
+    {
+        $saved_scenario = SavedScenario::where('id', $request->saved_scenario_id)->first();
+        $saved_scene = SavedScene::where('id', $saved_scenario->last_saved_scene_id)->first();
+
+        return response()->json($saved_scene, 200);
     }
 }
