@@ -15,7 +15,6 @@ class SavedScenario extends Model
     protected $fillable = [
         'user_id',
         'scenario_id',
-        'inventory_id',
         'last_saved_scene_id',
         'creation',
         'last_save',

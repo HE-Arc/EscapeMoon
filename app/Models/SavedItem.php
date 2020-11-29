@@ -13,9 +13,9 @@ class SavedItem extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'saved_scene_id',
-        'inventory_id',
+        'saved_scenario_id',
         'item_id',
         'picked',
+        'inventory',
     ];
 }

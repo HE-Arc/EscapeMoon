@@ -18,7 +18,7 @@ class CreateSavedItemsTable extends Migration
             $table->unsignedBigInteger('saved_scene_id')->nullable();
             $table->unsignedBigInteger('inventory_id')->nullable();
             $table->unsignedBigInteger('item_id')->nullable();
-            $table->boolean('picked');
+            $table->boolean('picked')->default(false);
 
             $table->foreign('saved_scene_id')->references('id')->on('saved_scenes');
             $table->foreign('inventory_id')->references('id')->on('inventories');
