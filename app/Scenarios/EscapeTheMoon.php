@@ -9,43 +9,43 @@ use App\Models\Inventory;
 
 class EscapeTheMoon
 {
-    public static function click($saved_scenario, $saved_scene, $position)
+    public static function click($savedScenario, $savedScene, $position)
     {
-        switch($saved_scene->scene_id)
+        switch($savedScene->scene_id)
         {
             case 1:
-                return EscapeTheMoon::clickMaintenanceRoomScene($saved_scenario, $saved_scene, $position);
+                return EscapeTheMoon::clickMaintenanceRoomScene($savedScenario, $savedScene, $position);
             case 2:
-                return EscapeTheMoon::clickToolCabinetScene($saved_scenario, $saved_scene, $position);
+                return EscapeTheMoon::clickToolCabinetScene($savedScenario, $savedScene, $position);
         }
     }
 
-    private static function pickItem($item_id, $saved_scenario_id)
+    private static function pickItem($itemId, $savedScenarioId)
     {
-        $saved_item = SavedItem::where([
-            ['saved_scenario_id', $saved_scenario_id],
-            ['item_id', $item_id],
+        $savedItem = SavedItem::where([
+            ['saved_scenario_id', $savedScenarioId],
+            ['item_id', $itemId],
         ])->first();
 
-        if($saved_item->picked == false)
+        if($savedItem->picked == false)
         {
-            $saved_item->inventory = true;
-            $saved_item->picked = true;
-            $saved_item->save();
+            $savedItem->inventory = true;
+            $savedItem->picked = true;
+            $savedItem->save();
 
-            return array('add_items' => [$saved_item]);
+            return array('add_items' => [$savedItem]);
         }
     }
 
-    private static function changeScene($scene_id, $saved_scenario)
+    private static function changeScene($sceneId, $savedScenario)
     {
         $next_saved_scene = SavedScene::where([
-            ['saved_scenario_id', $saved_scenario->id],
-            ['scene_id', $scene_id],
+            ['saved_scenario_id', $savedScenario->id],
+            ['scene_id', $sceneId],
         ])->first();
 
-        $saved_scenario->last_saved_scene_id = $next_saved_scene->id;
-        $saved_scenario->save();
+        $savedScenario->last_saved_scene_id = $next_saved_scene->id;
+        $savedScenario->save();
 
         return array('change_scene' => $next_saved_scene);
     }
@@ -54,31 +54,31 @@ class EscapeTheMoon
     //Salle de maintenance
     //=======================================================
 
-    private static function clickMaintenanceRoomScene($saved_scenario, $saved_scene, $position)
+    private static function clickMaintenanceRoomScene($savedScenario, $savedScene, $position)
     {
         if($position[0] >= 0.2779 && $position[0] <= 0.3402 && $position[1] >= 0.6987 && $position[1] <= 0.7186)
-            return EscapeTheMoon::pickItem(1, $saved_scenario->id);
+            return EscapeTheMoon::pickItem(1, $savedScenario->id);
         else if($position[0] >= 0.7783 && $position[0] <= 0.9132 && $position[1] >= 0.7492 && $position[1] <= 0.8012)
-            return EscapeTheMoon::pickItem(2, $saved_scenario->id);
+            return EscapeTheMoon::pickItem(2, $savedScenario->id);
         else if($position[0] >= 0.4544 && $position[0] <= 0.6761 && $position[1] >= 0.3730 && $position[1] <= 0.7660)
-            return EscapeTheMoon::changeScene(2, $saved_scenario);
+            return EscapeTheMoon::changeScene(2, $savedScenario);
         else if($position[0] >= 0.7878 && $position[0] <= 0.8883 && $position[1] >= 0.4587 && $position[1] <= 0.7339)
-            return EscapeTheMoon::clickMRDoor($saved_scenario);
+            return EscapeTheMoon::clickMRDoor($savedScenario);
     }
 
-    private static function clickMRDoor($saved_scenario)
+    private static function clickMRDoor($savedScenario)
     {
-        $door_key = SavedItem::where([
+        $doorKey = SavedItem::where([
             ['item_id', 2],
-            ['saved_scenario_id', $saved_scenario->id],
+            ['saved_scenario_id', $savedScenario->id],
         ])->first();
 
-        if($door_key->inventory == true)
+        if($doorKey->inventory == true)
         { 
-            $door_key->inventory = false;
-            $door_key->save();
-            $response = EscapeTheMoon::changeScene(3, $saved_scenario);
-            $response['remove_items'] = [$door_key];
+            $doorKey->inventory = false;
+            $doorKey->save();
+            $response = EscapeTheMoon::changeScene(3, $savedScenario);
+            $response['remove_items'] = [$doorKey];
             return $response;
         }
 
@@ -89,13 +89,13 @@ class EscapeTheMoon
     //Armoire à outils
     //=======================================================
 
-    private static function clickToolCabinetScene($saved_scenario, $saved_scene, $position)
+    private static function clickToolCabinetScene($savedScenario, $savedScene, $position)
     {
         if($position[0] >= 0.0103 && $position[0] <= 0.0678 && $position[1] >= 0.0107 && $position[1] <= 0.0779)
-            return EscapeTheMoon::changeScene(1, $saved_scenario);
+            return EscapeTheMoon::changeScene(1, $savedScenario);
         else if($position[0] >= 0.5592 && $position[0] <= 0.6408 && $position[1] >= 0.3379 && $position[1] <= 0.3914)
-            return EscapeTheMoon::pickItem(3, $saved_scenario->id);
+            return EscapeTheMoon::pickItem(3, $savedScenario->id);
         else if($position[0] >= 0.3539 && $position[0] <= 0.4458 && $position[1] >= 0.5091 && $position[1] <= 0.5856)
-            return EscapeTheMoon::pickItem(5, $saved_scenario->id);
+            return EscapeTheMoon::pickItem(5, $savedScenario->id);
     }
 }

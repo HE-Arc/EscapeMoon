@@ -18,13 +18,13 @@ class GameController extends Controller
             'position' => 'required',
         ]);
 
-        $saved_scene = SavedScene::where('id', $request->saved_scene_id)->first();
-        $saved_scenario = SavedScenario::where('id', $saved_scene->saved_scenario_id)->first();
+        $savedScene = SavedScene::where('id', $request->saved_scene_id)->first();
+        $savedScenario = SavedScenario::where('id', $savedScene->saved_scenario_id)->first();
 
-        switch($saved_scenario->scenario_id)
+        switch($savedScenario->scenario_id)
         {
             case 1:
-                $response = EscapeTheMoon::click($saved_scenario, $saved_scene, $request->position);
+                $response = EscapeTheMoon::click($savedScenario, $savedScene, $request->position);
                 break;
         }
 
@@ -40,37 +40,37 @@ class GameController extends Controller
             'second_item_id' => 'required|integer',
         ]);
 
-        $saved_scene = SavedScene::where('id', $request->saved_scene_id)->first();
-        $saved_scenario = SavedScenario::where('id', $saved_scene->saved_scenario_id)->first();
-        $result_saved_item = $this->getCraftItem($request->first_item_id, $request->second_item_id, $saved_scenario);
+        $savedScene = SavedScene::where('id', $request->saved_scene_id)->first();
+        $savedScenario = SavedScenario::where('id', $savedScene->saved_scenario_id)->first();
+        $resultSavedItem = $this->getCraftItem($request->first_item_id, $request->second_item_id, $savedScenario);
         $response = array();
 
-        if($result_saved_item != null)
+        if($resultSavedItem != null)
         {
-            $first_saved_item = SavedItem::where([['item_id', $request->first_item_id], ['saved_scenario_id', $saved_scenario->id]])->first();
-            $second_saved_item = SavedItem::where([['item_id', $request->second_item_id], ['saved_scenario_id', $saved_scenario->id]])->first();
-            $first_saved_item->inventory = false;
-            $second_saved_item->inventory = false;
-            $result_saved_item->inventory = true;
-            $first_saved_item->save();
-            $second_saved_item->save();
-            $result_saved_item->save();
+            $firstSavedItem = SavedItem::where([['item_id', $request->first_item_id], ['saved_scenario_id', $savedScenario->id]])->first();
+            $secondSavedItem = SavedItem::where([['item_id', $request->second_item_id], ['saved_scenario_id', $savedScenario->id]])->first();
+            $firstSavedItem->inventory = false;
+            $secondSavedItem->inventory = false;
+            $resultSavedItem->inventory = true;
+            $firstSavedItem->save();
+            $secondSavedItem->save();
+            $resultSavedItem->save();
 
-            $response['remove_items'] = [$first_saved_item, $second_saved_item];
-            $response['add_items'] = [$result_saved_item];
+            $response['remove_items'] = [$firstSavedItem, $secondSavedItem];
+            $response['add_items'] = [$resultSavedItem];
         }
 
         return response()->json($response, 200);
     }
 
-    private function getCraftItem($first_item_id, $second_item_id, $saved_scenario)
+    private function getCraftItem($firstItemId, $secondItemId, $savedScenario)
     {
-        $craft = Craft::where([['first_item_id', $first_item_id], ['second_item_id', $second_item_id]])->first();
+        $craft = Craft::where([['first_item_id', $firstItemId], ['second_item_id', $secondItemId]])->first();
         if($craft == null)
-            $craft = Craft::where([['first_item_id', $second_item_id], ['second_item_id', $first_item_id]])->first();
+            $craft = Craft::where([['first_item_id', $secondItemId], ['second_item_id', $firstItemId]])->first();
         if($craft == null)
             return null;
 
-        return SavedItem::where([['item_id', $craft->result_item_id], ['saved_scenario_id', $saved_scenario->id]])->first();
+        return SavedItem::where([['item_id', $craft->result_item_id], ['saved_scenario_id', $savedScenario->id]])->first();
     }
 }

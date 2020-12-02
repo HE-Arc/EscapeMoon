@@ -32,9 +32,9 @@ class SavedScenarioController extends Controller
         ]);
 
         $scenario = Scenario::where('id', $request->scenario_id)->first();
-        $first_scene = Scene::where('id', $scenario->first_scene_id)->first();
+        $firstScene = Scene::where('id', $scenario->first_scene_id)->first();
 
-        $saved_scenario = SavedScenario::create([
+        $savedScenario = SavedScenario::create([
             'user_id' => Auth::id(),
             'scenario_id' => $scenario->id,
             'creation' => Carbon::now(),
@@ -44,26 +44,26 @@ class SavedScenarioController extends Controller
         $scenes = Scene::where('scenario_id', $scenario->id)->get();
         foreach($scenes as $scene)
         {
-            $saved_scene = SavedScene::create([
-                'saved_scenario_id' => $saved_scenario->id,
+            $savedScene = SavedScene::create([
+                'saved_scenario_id' => $savedScenario->id,
                 'scene_id' => $scene->id,
             ]);
 
-            if($scene->id == $first_scene->id)
+            if($scene->id == $firstScene->id)
             {
-                $saved_scenario->last_saved_scene_id = $saved_scene->id;
-                $saved_scene->locked = false;
+                $savedScenario->last_saved_scene_id = $savedScene->id;
+                $savedScene->locked = false;
 
-                $saved_scenario->save();
-                $saved_scene->save();
+                $savedScenario->save();
+                $savedScene->save();
             }
         }
 
         $items = Item::where('scenario_id', $scenario->id)->get();
         foreach($items as $item)
         {
-            $saved_item = SavedItem::create([
-                'saved_scenario_id' => $saved_scenario->id,
+            $savedItem = SavedItem::create([
+                'saved_scenario_id' => $savedScenario->id,
                 'item_id' => $item->id,
             ]);
         }
@@ -77,15 +77,15 @@ class SavedScenarioController extends Controller
             'saved_scenario_id' => 'required|integer',
         ]);
 
-        $saved_scenario = SavedScenario::where('id', $request->saved_scenario_id)->first();
-        $saved_scenario->last_saved_scene_id = null;
-        $saved_scenario->save();
-        $saved_scenes = SavedScene::where('saved_scenario_id', $saved_scenario->id)->get();
+        $savedScenario = SavedScenario::where('id', $request->saved_scenario_id)->first();
+        $savedScenario->last_saved_scene_id = null;
+        $savedScenario->save();
+        $savedScenes = SavedScene::where('saved_scenario_id', $savedScenario->id)->get();
         
-        foreach($saved_scenes as $saved_scene)
-            SavedItem::where('saved_scenario_id', $saved_scenario->id)->delete();
+        foreach($savedScenes as $savedScene)
+            SavedItem::where('saved_scenario_id', $savedScenario->id)->delete();
 
-        SavedScene::where('saved_scenario_id', $saved_scenario->id)->delete();
+        SavedScene::where('saved_scenario_id', $savedScenario->id)->delete();
         SavedScenario::where('id', $request->saved_scenario_id)->delete();
 
         return $this->fetch();
@@ -97,9 +97,9 @@ class SavedScenarioController extends Controller
             'saved_scenario_id' => 'required|integer',
         ]);
 
-        $saved_scenario = SavedScenario::where('id', $request->saved_scenario_id)->first();
-        $saved_scene = SavedScene::where('id', $saved_scenario->last_saved_scene_id)->first();
+        $savedScenario = SavedScenario::where('id', $request->saved_scenario_id)->first();
+        $savedScene = SavedScene::where('id', $savedScenario->last_saved_scene_id)->first();
 
-        return response()->json($saved_scene, 200);
+        return response()->json($savedScene, 200);
     }
 }

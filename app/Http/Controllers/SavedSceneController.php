@@ -15,7 +15,7 @@ class SavedSceneController extends Controller
             'saved_scenario_id' => 'required|integer',
         ]);
 
-        $saved_scenes = SavedScene::where('saved_scenario_id', $request->saved_scenario_id)->get();
-        return response()->json($saved_scenes, 200);
+        $savedScenes = SavedScene::where('saved_scenario_id', $request->saved_scenario_id)->get();
+        return response()->json($savedScenes, 200);
     }
 }
