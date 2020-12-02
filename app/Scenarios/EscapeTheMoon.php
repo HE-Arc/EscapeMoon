@@ -82,7 +82,7 @@ class EscapeTheMoon
             return $response;
         }
 
-        return array();
+        return [];
     }
 
     //=======================================================
