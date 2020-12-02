@@ -2,12 +2,12 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\ScenarioController;
-use App\Http\Controllers\SavedScenarioController;
-use App\Http\Controllers\SavedSceneController;
-use App\Http\Controllers\SavedItemController;
-use App\Http\Controllers\GameController;
+use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\ScenarioController;
+use App\Http\Controllers\API\SavedScenarioController;
+use App\Http\Controllers\API\SavedSceneController;
+use App\Http\Controllers\API\SavedItemController;
+use App\Http\Controllers\API\GameController;
 
 /*
 |--------------------------------------------------------------------------
