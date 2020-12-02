@@ -13,6 +13,11 @@ class GameController extends Controller
 {
     public function click(Request $request)
     {
+        $request->validate([
+            'saved_scene_id' => 'required|integer',
+            'position' => 'required',
+        ]);
+
         $saved_scene = SavedScene::where('id', $request->saved_scene_id)->first();
         $saved_scenario = SavedScenario::where('id', $saved_scene->saved_scenario_id)->first();
 
@@ -29,6 +34,12 @@ class GameController extends Controller
 
     public function craft(Request $request)
     {
+        $request->validate([
+            'saved_scene_id' => 'required|integer',
+            'first_item_id' => 'required|integer',
+            'second_item_id' => 'required|integer',
+        ]);
+
         $saved_scene = SavedScene::where('id', $request->saved_scene_id)->first();
         $saved_scenario = SavedScenario::where('id', $saved_scene->saved_scenario_id)->first();
         $result_saved_item = $this->getCraftItem($request->first_item_id, $request->second_item_id, $saved_scenario);

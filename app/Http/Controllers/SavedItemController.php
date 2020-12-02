@@ -12,6 +12,10 @@ class SavedItemController extends Controller
 {
     public function inventory(Request $request)
     {
+        $request->validate([
+            'saved_scenario_id' => 'required|integer',
+        ]);
+
         $inventory = SavedItem::where([
             ['saved_scenario_id', $request->saved_scenario_id],
             ['inventory', true],

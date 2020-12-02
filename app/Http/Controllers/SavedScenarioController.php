@@ -27,6 +27,10 @@ class SavedScenarioController extends Controller
 
     public function create(Request $request)
     {
+        $request->validate([
+            'scenario_id' => 'required|integer',
+        ]);
+
         $scenario = Scenario::where('id', $request->scenario_id)->first();
         $first_scene = Scene::where('id', $scenario->first_scene_id)->first();
 
@@ -69,6 +73,10 @@ class SavedScenarioController extends Controller
 
     public function delete(Request $request)
     {
+        $request->validate([
+            'saved_scenario_id' => 'required|integer',
+        ]);
+
         $saved_scenario = SavedScenario::where('id', $request->saved_scenario_id)->first();
         $saved_scenario->last_saved_scene_id = null;
         $saved_scenario->save();
@@ -85,6 +93,10 @@ class SavedScenarioController extends Controller
 
     public function resume(Request $request)
     {
+        $request->validate([
+            'saved_scenario_id' => 'required|integer',
+        ]);
+
         $saved_scenario = SavedScenario::where('id', $request->saved_scenario_id)->first();
         $saved_scene = SavedScene::where('id', $saved_scenario->last_saved_scene_id)->first();
 
