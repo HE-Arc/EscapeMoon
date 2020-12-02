@@ -18,4 +18,14 @@ class SavedItem extends Model
         'picked',
         'inventory',
     ];
+
+    public function item()
+    {
+        return $this->belongsTo('App\Models\Item');
+    }
+
+    public function savedScenario()
+    {
+        return $this->belongsTo('App\Models\SavedScenario');
+    }
 }

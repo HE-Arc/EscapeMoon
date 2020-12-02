@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Models\SavedScene;
 use App\Models\SavedScenario;
 use App\Models\Craft;
@@ -18,8 +19,8 @@ class GameController extends Controller
             'position' => 'required',
         ]);
 
-        $savedScene = SavedScene::where('id', $request->saved_scene_id)->first();
-        $savedScenario = SavedScenario::where('id', $savedScene->saved_scenario_id)->first();
+        $savedScene = SavedScene::where('id', $request->saved_scene_id)->with('savedScenario')->firstOrFail();
+        $savedScenario = $savedScene->savedScenario;
 
         switch($savedScenario->scenario_id)
         {
@@ -40,15 +41,20 @@ class GameController extends Controller
             'second_item_id' => 'required|integer',
         ]);
 
-        $savedScene = SavedScene::where('id', $request->saved_scene_id)->first();
-        $savedScenario = SavedScenario::where('id', $savedScene->saved_scenario_id)->first();
-        $resultSavedItem = $this->getCraftItem($request->first_item_id, $request->second_item_id, $savedScenario);
-        $response = array();
+        $savedScene = SavedScene::where('id', $request->saved_scene_id)->with('savedScenario')->firstOrFail();
+        $savedScenario = $savedScene->savedScenario;
+        $craft = DB::table('crafts')
+            ->where('first_item_id', $request->first_item_id)
+            ->where('second_item_id', $request->second_item_id)
+            ->orWhere('first_item_id', $request->second_item_id)
+            ->where('second_item_id', $request->first_item_id)
+            ->first();
 
-        if($resultSavedItem != null)
+        if($craft != null)
         {
-            $firstSavedItem = SavedItem::where([['item_id', $request->first_item_id], ['saved_scenario_id', $savedScenario->id]])->first();
-            $secondSavedItem = SavedItem::where([['item_id', $request->second_item_id], ['saved_scenario_id', $savedScenario->id]])->first();
+            $firstSavedItem = SavedItem::where([['item_id', $craft->first_item_id], ['saved_scenario_id', $savedScenario->id]])->firstOrFail();
+            $secondSavedItem = SavedItem::where([['item_id', $craft->second_item_id], ['saved_scenario_id', $savedScenario->id]])->firstOrFail();
+            $resultSavedItem = SavedItem::where([['item_id', $craft->result_item_id], ['saved_scenario_id', $savedScenario->id]])->firstOrFail();
             $firstSavedItem->inventory = false;
             $secondSavedItem->inventory = false;
             $resultSavedItem->inventory = true;
@@ -61,16 +67,5 @@ class GameController extends Controller
         }
 
         return response()->json($response, 200);
-    }
-
-    private function getCraftItem($firstItemId, $secondItemId, $savedScenario)
-    {
-        $craft = Craft::where([['first_item_id', $firstItemId], ['second_item_id', $secondItemId]])->first();
-        if($craft == null)
-            $craft = Craft::where([['first_item_id', $secondItemId], ['second_item_id', $firstItemId]])->first();
-        if($craft == null)
-            return null;
-
-        return SavedItem::where([['item_id', $craft->result_item_id], ['saved_scenario_id', $savedScenario->id]])->first();
     }
 }

@@ -19,4 +19,14 @@ class SavedScenario extends Model
         'creation',
         'last_save',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo('App\Models\User');
+    }
+
+    public function scenario()
+    {
+        return $this->belongsTo('App\Models\Scenario');
+    }
 }
