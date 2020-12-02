@@ -80,16 +80,7 @@ class SavedScenarioController extends Controller
             'saved_scenario_id' => 'required|integer',
         ]);
 
-        $savedScenario = SavedScenario::where('id', $request->saved_scenario_id)->first();
-        $savedScenario->last_saved_scene_id = null;
-        $savedScenario->save();
-        $savedScenes = SavedScene::where('saved_scenario_id', $savedScenario->id)->get();
-        
-        foreach($savedScenes as $savedScene)
-            SavedItem::where('saved_scenario_id', $savedScenario->id)->delete();
-
-        SavedScene::where('saved_scenario_id', $savedScenario->id)->delete();
-        SavedScenario::where('id', $request->saved_scenario_id)->delete();
+        $savedScenario = SavedScenario::where('id', $request->saved_scenario_id)->delete();
 
         return $this->fetch();
     }

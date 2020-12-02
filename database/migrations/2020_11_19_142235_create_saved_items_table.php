@@ -20,9 +20,9 @@ class CreateSavedItemsTable extends Migration
             $table->unsignedBigInteger('item_id')->nullable();
             $table->boolean('picked')->default(false);
 
-            $table->foreign('saved_scene_id')->references('id')->on('saved_scenes');
+            $table->foreign('saved_scene_id')->references('id')->on('saved_scenes')->onDelete('cascade');
             $table->foreign('inventory_id')->references('id')->on('inventories');
-            $table->foreign('item_id')->references('id')->on('items');
+            $table->foreign('item_id')->references('id')->on('items')->onDelete('cascade');
         });
     }
 

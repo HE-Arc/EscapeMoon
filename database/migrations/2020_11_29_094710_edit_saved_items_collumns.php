@@ -16,7 +16,7 @@ class EditSavedItemsCollumns extends Migration
         Schema::table('saved_items', function (Blueprint $table) {
             $table->dropForeign(['saved_scene_id']);
             $table->renameColumn('saved_scene_id', 'saved_scenario_id');
-            $table->foreign('saved_scenario_id')->references('id')->on('saved_scenarios');
+            $table->foreign('saved_scenario_id')->references('id')->on('saved_scenarios')->onDelete('cascade');
             $table->dropForeign(['inventory_id']);
             $table->dropColumn('inventory_id');
             $table->boolean('inventory')->default(false);

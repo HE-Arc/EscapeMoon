@@ -14,7 +14,7 @@ class AddForeignReferenceSavedScenariosTable extends Migration
     public function up()
     {
         Schema::table('saved_scenarios', function (Blueprint $table) {
-            $table->foreign('last_saved_scene_id')->references('id')->on('saved_scenes');
+            $table->foreign('last_saved_scene_id')->references('id')->on('saved_scenes')->onDelete('set null');
         });
     }
 

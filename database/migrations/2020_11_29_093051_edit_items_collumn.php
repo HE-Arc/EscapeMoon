@@ -17,7 +17,7 @@ class EditItemsCollumn extends Migration
             $table->dropColumn(['position_x', 'position_y']);
             $table->dropForeign(['scene_id']);
             $table->renameColumn('scene_id', 'scenario_id');
-            $table->foreign('scenario_id')->references('id')->on('scenarios');
+            $table->foreign('scenario_id')->references('id')->on('scenarios')->onDelete('cascade');
             $table->string('description')->default('');
         });
     }
