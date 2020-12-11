@@ -13,9 +13,19 @@ class SavedItem extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'saved_scene_id',
-        'inventory_id',
+        'saved_scenario_id',
         'item_id',
         'picked',
+        'inventory',
     ];
+
+    public function item()
+    {
+        return $this->belongsTo('App\Models\Item');
+    }
+
+    public function savedScenario()
+    {
+        return $this->belongsTo('App\Models\SavedScenario');
+    }
 }

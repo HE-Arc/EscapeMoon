@@ -17,4 +17,9 @@ class SavedScene extends Model
         'saved_scenario_id',
         'locked',
     ];
+
+    public function savedScenario()
+    {
+        return $this->belongsTo('App\Models\SavedScenario');
+    }
 }

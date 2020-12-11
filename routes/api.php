@@ -2,12 +2,12 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\ScenarioController;
-use App\Http\Controllers\SavedScenarioController;
-use App\Http\Controllers\SavedSceneController;
-use App\Http\Controllers\InventoryController;
-use App\Http\Controllers\GameController;
+use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\ScenarioController;
+use App\Http\Controllers\API\SavedScenarioController;
+use App\Http\Controllers\API\SavedSceneController;
+use App\Http\Controllers\API\SavedItemController;
+use App\Http\Controllers\API\GameController;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,8 +47,9 @@ Route::middleware('auth:api')->group(function ()
     Route::post("/save/delete", [SavedScenarioController::class, "delete"]);
     Route::post("/save/resume", [SavedScenarioController::class, "resume"]);
     Route::post("/scene", [SavedSceneController::class, "fetch"]);
-    Route::post("/inventory", [InventoryController::class, "fetch"]);
+    Route::post("/inventory", [SavedItemController::class, "inventory"]);
     Route::post("/game/click", [GameController::class, "click"]);
+    Route::post("/game/craft", [GameController::class, "craft"]);
 });
 
 Route::post("/login", [AuthController::class, "login"]);

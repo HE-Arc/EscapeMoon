@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddForeignReferenceSavedScenariosTable extends Migration
+class EditSavedScenariosCollumns extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,8 @@ class AddForeignReferenceSavedScenariosTable extends Migration
     public function up()
     {
         Schema::table('saved_scenarios', function (Blueprint $table) {
-            $table->foreign('last_saved_scene_id')->references('id')->on('saved_scenes')->onDelete('set null');
+            $table->dropForeign(['inventory_id']);
+            $table->dropColumn('inventory_id');
         });
     }
 
@@ -26,7 +27,8 @@ class AddForeignReferenceSavedScenariosTable extends Migration
     public function down()
     {
         Schema::table('saved_scenarios', function (Blueprint $table) {
-            $table->dropForeign(['last_saved_scene_id']);
+            $table->unsignedBigInteger('inventory_id')->nullable();
+            $table->foreign('inventory_id')->references('id')->on('inventories');
         });
     }
 }

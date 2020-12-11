@@ -17,10 +17,10 @@ class CreateSavedScenesTable extends Migration
             $table->id();
             $table->unsignedBigInteger('scene_id')->nullable();
             $table->unsignedBigInteger('saved_scenario_id')->nullable();
-            $table->boolean('locked')->default(0);
+            $table->boolean('locked')->default(true);
 
-            $table->foreign('scene_id')->references('id')->on('scenes');
-            $table->foreign('saved_scenario_id')->references('id')->on('saved_scenarios');
+            $table->foreign('scene_id')->references('id')->on('scenes')->onDelete('cascade');
+            $table->foreign('saved_scenario_id')->references('id')->on('saved_scenarios')->onDelete('cascade');
         });
     }
 

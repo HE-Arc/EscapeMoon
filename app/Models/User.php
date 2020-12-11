@@ -41,4 +41,9 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function savedScenarios()
+    {
+        return $this->hasMany('App\Models\SavedScenario');
+    }
 }

@@ -11,4 +11,14 @@ class Scene extends Model
 
     protected $table = 'scenes';
     public $timestamps = false;
+
+    public function scenario()
+    {
+        return $this->belongsTo('App\Models\Scenario');
+    }
+
+    public function savedScenes()
+    {
+        return $this->hasMany('App\Models\SavedScene');
+    }
 }
