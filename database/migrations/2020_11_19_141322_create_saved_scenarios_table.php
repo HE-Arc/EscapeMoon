@@ -22,9 +22,9 @@ class CreateSavedScenariosTable extends Migration
             $table->dateTime('creation')->nullable();
             $table->dateTime('last_save')->nullable();
 
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('scenario_id')->references('id')->on('scenarios');
-            $table->foreign('inventory_id')->references('id')->on('inventories');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('scenario_id')->references('id')->on('scenarios')->onDelete('cascade');
+            $table->foreign('inventory_id')->references('id')->on('inventories')->onDelete('cascade');
         });
     }
 

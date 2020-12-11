@@ -15,9 +15,18 @@ class SavedScenario extends Model
     protected $fillable = [
         'user_id',
         'scenario_id',
-        'inventory_id',
         'last_saved_scene_id',
         'creation',
         'last_save',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo('App\Models\User');
+    }
+
+    public function scenario()
+    {
+        return $this->belongsTo('App\Models\Scenario');
+    }
 }
