@@ -16,10 +16,6 @@ class SavedSceneController extends Controller
             'saved_scenario_id' => 'required|integer',
         ]);
 
-        $savedScenario = SavedScenario::where('id', $request->saved_scenario_id)->get();
-        $savedScenario->last_save = Carbon::now()->addHours(1);
-        $savedScenario->save();
-
         $savedScenes = SavedScene::where('saved_scenario_id', $request->saved_scenario_id)->get();
 
         return response()->json($savedScenes, 200);
