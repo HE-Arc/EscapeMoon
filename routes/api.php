@@ -8,6 +8,7 @@ use App\Http\Controllers\API\SavedScenarioController;
 use App\Http\Controllers\API\SavedSceneController;
 use App\Http\Controllers\API\SavedItemController;
 use App\Http\Controllers\API\GameController;
+use App\Http\Controllers\API\ScoreboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -50,6 +51,7 @@ Route::middleware('auth:api')->group(function ()
     Route::post("/inventory", [SavedItemController::class, "inventory"]);
     Route::post("/game/click", [GameController::class, "click"]);
     Route::post("/game/craft", [GameController::class, "craft"]);
+    Route::get("/scoreboard/escape_the_moon", [ScoreboardController::class, "getEscapeMoonScoreboard"]);
 });
 
 Route::post("/login", [AuthController::class, "login"]);

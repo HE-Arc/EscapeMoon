@@ -43,7 +43,6 @@ class SavedScenarioController extends Controller
             'scenario_id' => $scenario->id,
             'creation' => Carbon::now()->addHours(1),
             'last_save' => Carbon::now()->addHours(1),
-            'time' => 0,
         ]);
 
         

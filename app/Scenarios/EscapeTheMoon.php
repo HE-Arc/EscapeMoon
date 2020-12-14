@@ -79,6 +79,10 @@ class EscapeTheMoon
             $doorKey->save();
             $response = EscapeTheMoon::changeScene(3, $savedScenario);
             $response['remove_items'] = [$doorKey];
+
+            $savedScenario->finished = true;
+            $savedScenario->save();
+
             return $response;
         }
 

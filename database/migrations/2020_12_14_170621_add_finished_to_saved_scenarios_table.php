@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddTimeToSavedScenariosTable extends Migration
+class AddFinishedToSavedScenariosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,7 @@ class AddTimeToSavedScenariosTable extends Migration
     public function up()
     {
         Schema::table('saved_scenarios', function (Blueprint $table) {
-            $table->unsignedBigInteger('time')->default(0);
+            $table->boolean('finished')->default(false);
         });
     }
 
@@ -26,7 +26,7 @@ class AddTimeToSavedScenariosTable extends Migration
     public function down()
     {
         Schema::table('saved_scenarios', function (Blueprint $table) {
-            $table->dropColumn('time');
+            $table->dropColumn('finished');
         });
     }
 }
