@@ -41,8 +41,8 @@ class SavedScenarioController extends Controller
         $savedScenario = SavedScenario::create([
             'user_id' => Auth::id(),
             'scenario_id' => $scenario->id,
-            'creation' => Carbon::now(),
-            'last_save' => Carbon::now(),
+            'creation' => Carbon::now()->addHours(1),
+            'last_save' => Carbon::now()->addHours(1),
         ]);
 
         

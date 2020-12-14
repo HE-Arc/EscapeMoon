@@ -30,7 +30,7 @@ class GameController extends Controller
                 break;
         }
 
-        $savedScenario->last_save = Carbon::now();
+        $savedScenario->last_save = Carbon::now()->addHours(1);
         $savedScenario->save();
         
         return response()->json($response, 200);
@@ -69,7 +69,7 @@ class GameController extends Controller
             $response['add_items'] = [$resultSavedItem];
         }
 
-        $savedScenario->last_save = Carbon::now();
+        $savedScenario->last_save = Carbon::now()->addHours(1);
         $savedScenario->save();
 
         return response()->json($response, 200);
