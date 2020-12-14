@@ -20,6 +20,7 @@ class SavedScenarioController extends Controller
         $saves = DB::table('saved_scenarios')
             ->join('scenarios', 'saved_scenarios.scenario_id', 'scenarios.id')
             ->select('saved_scenarios.id', 'scenarios.name', 'saved_scenarios.creation', 'saved_scenarios.last_save')
+            ->where('user_id', Auth::id())
             ->get();
 
         return response()->json($saves, 200);
