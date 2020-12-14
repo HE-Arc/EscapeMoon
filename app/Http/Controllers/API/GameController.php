@@ -9,6 +9,7 @@ use App\Models\SavedScenario;
 use App\Models\Craft;
 use App\Models\SavedItem;
 use App\Scenarios\EscapeTheMoon;
+use Carbon\Carbon;
 
 class GameController extends Controller
 {
@@ -29,8 +30,10 @@ class GameController extends Controller
                 break;
         }
 
+        $savedScenario->last_save = Carbon::now();
+        $savedScenario->save();
+        
         return response()->json($response, 200);
-        //return response()->json($request->position, 200);
     }
 
     public function craft(Request $request)
@@ -65,6 +68,9 @@ class GameController extends Controller
             $response['remove_items'] = [$firstSavedItem, $secondSavedItem];
             $response['add_items'] = [$resultSavedItem];
         }
+
+        $savedScenario->last_save = Carbon::now();
+        $savedScenario->save();
 
         return response()->json($response, 200);
     }
