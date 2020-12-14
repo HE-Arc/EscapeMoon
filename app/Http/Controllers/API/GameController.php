@@ -29,10 +29,8 @@ class GameController extends Controller
                 $response = EscapeTheMoon::click($savedScenario, $savedScene, $request->position);
                 break;
         }
-
-        $savedScenario->last_save = Carbon::now()->addHours(1);
-        $savedScenario->save();
         
+        $this->save($savedScenario);
         return response()->json($response, 200);
     }
 
@@ -69,9 +67,19 @@ class GameController extends Controller
             $response['add_items'] = [$resultSavedItem];
         }
 
-        $savedScenario->last_save = Carbon::now()->addHours(1);
-        $savedScenario->save();
-
+        $this->save($savedScenario);
         return response()->json($response, 200);
+    }
+
+    private function save($savedScenario)
+    {
+        $lastSave = new Carbon($savedScenario->last_save);
+        $now = Carbon::now()->addHours(1);
+
+        $elapsed = $now->diffInSeconds($lastSave);
+
+        $savedScenario->last_save = $now;
+        $savedScenario->time = $savedScenario->time + $elapsed;
+        $savedScenario->save();
     }
 }

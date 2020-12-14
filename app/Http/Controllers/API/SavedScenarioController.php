@@ -43,6 +43,7 @@ class SavedScenarioController extends Controller
             'scenario_id' => $scenario->id,
             'creation' => Carbon::now()->addHours(1),
             'last_save' => Carbon::now()->addHours(1),
+            'time' => 0,
         ]);
 
         
@@ -92,7 +93,10 @@ class SavedScenarioController extends Controller
             'saved_scenario_id' => 'required|integer',
         ]);
 
-        $savedScenario = SavedScenario::where('id', $request->saved_scenario_id)->first();
+        $savedScenario = SavedScenario::where('id', $request->saved_scenario_id)->first();      
+        $savedScenario->last_save = Carbon::now()->addHours(1);
+        $savedScenario->save();
+
         $savedScene = SavedScene::where('id', $savedScenario->last_saved_scene_id)->first();
 
         return response()->json($savedScene, 200);

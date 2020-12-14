@@ -18,6 +18,7 @@ class SavedScenario extends Model
         'last_saved_scene_id',
         'creation',
         'last_save',
+        'time',
     ];
 
     public function user()
