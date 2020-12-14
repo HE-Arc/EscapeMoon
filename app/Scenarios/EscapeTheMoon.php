@@ -87,7 +87,9 @@ class EscapeTheMoon
             $trophy = Trophy::where('id', 1)->first();
             if(Auth::user()->trophies->contains($trophy) == false)
                 $user = Auth::user()->trophies()->attach($trophy);
-           
+            
+            $response['end'] = true;
+            
             return $response;
         }
 
