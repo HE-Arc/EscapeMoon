@@ -13,7 +13,7 @@ class CreateTrophiesUsersTable extends Migration
      */
     public function up()
     {
-        Schema::create('trophies_users', function (Blueprint $table) {
+        Schema::create('trophy_user', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('trophy_id');
             $table->unsignedBigInteger('user_id');

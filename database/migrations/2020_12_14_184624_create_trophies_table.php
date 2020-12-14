@@ -16,6 +16,7 @@ class CreateTrophiesTable extends Migration
         Schema::create('trophies', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('description');
         });
     }
 

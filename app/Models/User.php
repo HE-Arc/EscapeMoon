@@ -46,4 +46,9 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Models\SavedScenario');
     }
+
+    public function trophies()
+    {
+        return $this->belongsToMany('App\Models\Trophy');
+    }
 }

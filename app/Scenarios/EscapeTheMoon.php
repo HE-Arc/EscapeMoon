@@ -5,7 +5,8 @@ namespace App\Scenarios;
 use App\Scenarios\Scenario;
 use App\Models\SavedItem;
 use App\Models\SavedScene;
-use App\Models\Inventory;
+use App\Models\Trophy;
+use Illuminate\Support\Facades\Auth;
 
 class EscapeTheMoon
 {
@@ -83,6 +84,10 @@ class EscapeTheMoon
             $savedScenario->finished = true;
             $savedScenario->save();
 
+            $trophy = Trophy::where('id', 1)->first();
+            if(Auth::user()->trophies->contains($trophy) == false)
+                $user = Auth::user()->trophies()->attach($trophy);
+           
             return $response;
         }
 
