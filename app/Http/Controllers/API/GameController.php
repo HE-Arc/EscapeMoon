@@ -9,6 +9,7 @@ use App\Models\SavedScenario;
 use App\Models\Craft;
 use App\Models\SavedItem;
 use App\Scenarios\EscapeTheMoon;
+use Carbon\Carbon;
 
 class GameController extends Controller
 {
@@ -28,9 +29,9 @@ class GameController extends Controller
                 $response = EscapeTheMoon::click($savedScenario, $savedScene, $request->position);
                 break;
         }
-
+        
+        $this->save($savedScenario);
         return response()->json($response, 200);
-        //return response()->json($request->position, 200);
     }
 
     public function craft(Request $request)
@@ -66,6 +67,19 @@ class GameController extends Controller
             $response['add_items'] = [$resultSavedItem];
         }
 
+        $this->save($savedScenario);
         return response()->json($response, 200);
+    }
+
+    private function save($savedScenario)
+    {
+        $lastSave = new Carbon($savedScenario->last_save);
+        $now = Carbon::now()->addHours(1);
+
+        $elapsed = $now->diffInSeconds($lastSave);
+
+        $savedScenario->last_save = $now;
+        $savedScenario->time = $savedScenario->time + $elapsed;
+        $savedScenario->save();
     }
 }

@@ -8,6 +8,7 @@ use App\Models\Scenario;
 use App\Models\Scene;
 use App\Models\Item;
 use App\Models\Craft;
+use App\Models\Trophy;
 
 class EscapeTheMoonSeeder extends Seeder
 {
@@ -77,6 +78,16 @@ class EscapeTheMoonSeeder extends Seeder
             'first_item_id' => $batteries->id,
             'second_item_id' => $flashlight_unpowered->id,
             'result_item_id' => $flashlight->id,
+        ]);
+
+        Trophy::create([
+            'name' => "Terminé : Escape the Moon",
+            'description' => "Vous avez terminé le scénario Escape the moon",
+        ]);
+
+        Trophy::create([
+            'name' => "Terminé : Salle de maintenance",
+            'description' => "Vous êtes sorti de la salle de maintenance dans le scénario Escape the moon",
         ]);
 
         $scenario->first_scene_id = $maintenance_room->id;

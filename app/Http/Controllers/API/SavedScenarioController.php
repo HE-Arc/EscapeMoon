@@ -20,6 +20,7 @@ class SavedScenarioController extends Controller
         $saves = DB::table('saved_scenarios')
             ->join('scenarios', 'saved_scenarios.scenario_id', 'scenarios.id')
             ->select('saved_scenarios.id', 'scenarios.name', 'saved_scenarios.creation', 'saved_scenarios.last_save')
+            ->where('user_id', Auth::id())
             ->get();
 
         return response()->json($saves, 200);
@@ -40,8 +41,8 @@ class SavedScenarioController extends Controller
         $savedScenario = SavedScenario::create([
             'user_id' => Auth::id(),
             'scenario_id' => $scenario->id,
-            'creation' => Carbon::now(),
-            'last_save' => Carbon::now(),
+            'creation' => Carbon::now()->addHours(1),
+            'last_save' => Carbon::now()->addHours(1),
         ]);
 
         
@@ -91,7 +92,10 @@ class SavedScenarioController extends Controller
             'saved_scenario_id' => 'required|integer',
         ]);
 
-        $savedScenario = SavedScenario::where('id', $request->saved_scenario_id)->first();
+        $savedScenario = SavedScenario::where('id', $request->saved_scenario_id)->first();      
+        $savedScenario->last_save = Carbon::now()->addHours(1);
+        $savedScenario->save();
+
         $savedScene = SavedScene::where('id', $savedScenario->last_saved_scene_id)->first();
 
         return response()->json($savedScene, 200);
