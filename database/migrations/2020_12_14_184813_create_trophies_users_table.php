@@ -30,8 +30,6 @@ class CreateTrophiesUsersTable extends Migration
      */
     public function down()
     {
-        $table->dropForeign(['trophy_id']);
-        $table->dropForeign(['user_id']);
-        Schema::dropIfExists('trophies_users');
+        Schema::dropIfExists('trophy_user');
     }
 }
