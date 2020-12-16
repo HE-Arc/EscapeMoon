@@ -7,6 +7,7 @@ use App\Models\SavedItem;
 use App\Models\SavedScene;
 use App\Models\Trophy;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class EscapeTheMoon
 {
@@ -18,6 +19,8 @@ class EscapeTheMoon
                 return EscapeTheMoon::clickMaintenanceRoomScene($savedScenario, $savedScene, $position);
             case 2:
                 return EscapeTheMoon::clickToolCabinetScene($savedScenario, $savedScene, $position);
+            case 3:
+                return EscapeTheMoon::clickLibraryScene($savedScenario, $savedScene, $position);
         }
     }
 
@@ -40,15 +43,17 @@ class EscapeTheMoon
 
     private static function changeScene($sceneId, $savedScenario)
     {
-        $next_saved_scene = SavedScene::where([
-            ['saved_scenario_id', $savedScenario->id],
-            ['scene_id', $sceneId],
-        ])->first();
+        $savedScene = DB::table('saved_scenes')
+            ->join('saved_scenarios', 'saved_scenes.saved_scenario_id', 'saved_scenarios.id')
+            ->select('saved_scenes.*', 'saved_scenarios.flashlight')
+            ->where('saved_scenario_id', $savedScenario->id)
+            ->where('scene_id', $sceneId)
+            ->first();
 
-        $savedScenario->last_saved_scene_id = $next_saved_scene->id;
+        $savedScenario->last_saved_scene_id = $savedScene->id;
         $savedScenario->save();
 
-        return array('change_scene' => $next_saved_scene);
+        return array('change_scene' => $savedScene);
     }
 
     //=======================================================
@@ -64,33 +69,41 @@ class EscapeTheMoon
         else if($position[0] >= 0.4544 && $position[0] <= 0.6761 && $position[1] >= 0.3730 && $position[1] <= 0.7660)
             return EscapeTheMoon::changeScene(2, $savedScenario);
         else if($position[0] >= 0.7878 && $position[0] <= 0.8883 && $position[1] >= 0.4587 && $position[1] <= 0.7339)
-            return EscapeTheMoon::clickMRDoor($savedScenario);
+            return EscapeTheMoon::clickMRDoor($savedScenario, $savedScene);
     }
 
-    private static function clickMRDoor($savedScenario)
+    private static function clickMRDoor($savedScenario, $savedScene)
     {
         $doorKey = SavedItem::where([
             ['item_id', 2],
             ['saved_scenario_id', $savedScenario->id],
         ])->first();
 
+        $library = SavedScene::where([
+            ['scene_id', 3],
+            ['saved_scenario_id', $savedScenario->id],
+        ])->first();
+
         if($doorKey->inventory == true)
         { 
+            $library->locked = false;
+            $library->save();
+
             $doorKey->inventory = false;
             $doorKey->save();
             $response = EscapeTheMoon::changeScene(3, $savedScenario);
             $response['remove_items'] = [$doorKey];
 
-            $savedScenario->finished = true;
-            $savedScenario->save();
-
-            $trophy = Trophy::where('id', 1)->first();
+            $trophy = Trophy::where('id', 2)->first();
             if(Auth::user()->trophies->contains($trophy) == false)
                 $user = Auth::user()->trophies()->attach($trophy);
             
-            $response['end'] = true;
-            
             return $response;
+        }
+        else
+        {
+            if($library->locked == false)
+                return EscapeTheMoon::changeScene(3, $savedScenario);
         }
 
         return [];
@@ -108,5 +121,24 @@ class EscapeTheMoon
             return EscapeTheMoon::pickItem(3, $savedScenario->id);
         else if($position[0] >= 0.3539 && $position[0] <= 0.4458 && $position[1] >= 0.5091 && $position[1] <= 0.5856)
             return EscapeTheMoon::pickItem(5, $savedScenario->id);
+    }
+
+    //=======================================================
+    //Librairie
+    //=======================================================
+    private static function clickLibraryScene($savedScenario, $savedScene, $position)
+    {
+        if($savedScenario->flashlight == false && $savedScene->dark == true)
+            return EscapeTheMoon::changeScene(1, $savedScenario);
+        else if($position[0] >= 0.765 && $position[0] <= 0.7913 && $position[1] >= 0.4719 && $position[1] <= 0.5026)
+            return EscapeTheMoon::clickLibraryLights($savedScenario, $savedScene);
+    }
+
+    private static function clickLibraryLights($savedScenario, $savedScene)
+    {
+        $savedScene->dark = false;
+        $savedScene->save();
+
+        return EscapeTheMoon::changeScene(3, $savedScenario);
     }
 }

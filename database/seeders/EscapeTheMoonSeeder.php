@@ -36,6 +36,7 @@ class EscapeTheMoonSeeder extends Seeder
         $library = Scene::create([
             'scenario_id' => $scenario->id,
             'name' => 'Librairie',
+            'dark' => true,
         ]);
 
         $screwdriver = Item::create([

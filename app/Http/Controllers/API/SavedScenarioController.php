@@ -51,6 +51,7 @@ class SavedScenarioController extends Controller
             $savedScene = SavedScene::create([
                 'saved_scenario_id' => $savedScenario->id,
                 'scene_id' => $scene->id,
+                'dark' => $scene->dark,
             ]);
 
             if($scene->id == $scenario->firstScene->id)
@@ -96,7 +97,12 @@ class SavedScenarioController extends Controller
         $savedScenario->last_save = Carbon::now()->addHours(1);
         $savedScenario->save();
 
-        $savedScene = SavedScene::where('id', $savedScenario->last_saved_scene_id)->first();
+        //$savedScene = SavedScene::where('id', $savedScenario->last_saved_scene_id)->first();
+        $savedScene = DB::table('saved_scenes')
+            ->join('saved_scenarios', 'saved_scenes.saved_scenario_id', 'saved_scenarios.id')
+            ->select('saved_scenes.*', 'saved_scenarios.flashlight')
+            ->where('saved_scenes.id', $savedScenario->last_saved_scene_id)
+            ->first();
 
         return response()->json($savedScene, 200);
     }
