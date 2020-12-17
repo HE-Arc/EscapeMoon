@@ -101,7 +101,7 @@ class SavedScenarioController extends Controller
         //$savedScene = SavedScene::where('id', $savedScenario->last_saved_scene_id)->first();
         $savedScene = DB::table('saved_scenes')
             ->join('saved_scenarios', 'saved_scenes.saved_scenario_id', 'saved_scenarios.id')
-            ->select('saved_scenes.*', 'saved_scenarios.flashlight')
+            ->select('saved_scenes.*', 'saved_scenarios.flashlight', 'saved_scenarios.time')
             ->where('saved_scenes.id', $savedScenario->last_saved_scene_id)
             ->first();
 

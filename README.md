@@ -2,7 +2,7 @@
 
 ### Histoire
 
-En  l'an 3077, le COVID-19 a décimé la terre. Les derniers survivant ont décidé d'établir des colonies sur la lune afin d'échappé au fléau qui a amené l'humanité au bord de l'extinction.
+En  l'an 3077, la COVID-19 a décimé la terre. Les derniers survivant ont décidé d'établir des colonies sur la lune afin d'échappé au fléau qui a amené l'humanité au bord de l'extinction.
 
 
 
