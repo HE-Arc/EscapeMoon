@@ -16,6 +16,7 @@ class SavedScene extends Model
         'scene_id',
         'saved_scenario_id',
         'locked',
+        'dark',
     ];
 
     public function savedScenario()

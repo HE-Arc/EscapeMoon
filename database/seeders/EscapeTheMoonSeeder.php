@@ -36,6 +36,7 @@ class EscapeTheMoonSeeder extends Seeder
         $library = Scene::create([
             'scenario_id' => $scenario->id,
             'name' => 'Librairie',
+            'dark' => true,
         ]);
 
         $screwdriver = Item::create([
@@ -66,6 +67,11 @@ class EscapeTheMoonSeeder extends Seeder
         $batteries = Item::create([
             'scenario_id' => $scenario->id,
             'name' => 'Piles',
+        ]);
+
+        $access_card = Item::create([
+            'scenario_id' => $scenario->id,
+            'name' => 'Carte accès',
         ]);
 
         Craft::create([

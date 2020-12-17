@@ -63,6 +63,12 @@ class GameController extends Controller
             $secondSavedItem->save();
             $resultSavedItem->save();
 
+            if($resultSavedItem->item_id == 4)
+            {
+                $savedScenario->flashlight = true;
+                $savedScenario->save();
+            }
+
             $response['remove_items'] = [$firstSavedItem, $secondSavedItem];
             $response['add_items'] = [$resultSavedItem];
         }
