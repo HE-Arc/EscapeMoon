@@ -132,6 +132,10 @@ class EscapeTheMoon
             return EscapeTheMoon::changeScene(1, $savedScenario);
         else if($position[0] >= 0.765 && $position[0] <= 0.7913 && $position[1] >= 0.4719 && $position[1] <= 0.5026)
             return EscapeTheMoon::clickLibraryLights($savedScenario, $savedScene);
+        else if($position[0] >= 0.1468 && $position[0] <= 0.1640 && $position[1] >= 0.2941 && $position[1] <= 0.4298)
+            return EscapeTheMoon::pickItem(7, $savedScenario->id);
+        else if($position[0] >= 0.6022 && $position[0] <= 0.6713 && $position[1] >= 0.4456 && $position[1] <= 0.6379)
+            return EscapeTheMoon::clickLibraryDoor($savedScenario);
     }
 
     private static function clickLibraryLights($savedScenario, $savedScene)
@@ -140,5 +144,32 @@ class EscapeTheMoon
         $savedScene->save();
 
         return EscapeTheMoon::changeScene(3, $savedScenario);
+    }
+
+    private static function clickLibraryDoor($savedScenario)
+    {
+        $accessCard = SavedItem::where([
+            ['item_id', 7],
+            ['saved_scenario_id', $savedScenario->id],
+        ])->first();
+
+        if($accessCard->inventory == true)
+        {
+            $accessCard->inventory = false;
+            $accessCard->save();
+            $response['remove_items'] = [$accessCard];
+
+            $trophy = Trophy::where('id', 1)->first();
+            if(Auth::user()->trophies->contains($trophy) == false)
+                $user = Auth::user()->trophies()->attach($trophy);
+
+            $savedScenario->finished = true;
+            $savedScenario->save();
+            $response['end'] = true;
+            
+            return $response;
+        }
+
+        return [];
     }
 }

@@ -69,6 +69,11 @@ class EscapeTheMoonSeeder extends Seeder
             'name' => 'Piles',
         ]);
 
+        $access_card = Item::create([
+            'scenario_id' => $scenario->id,
+            'name' => 'Carte accès',
+        ]);
+
         Craft::create([
             'first_item_id' => $screwdriver->id,
             'second_item_id' => $radio->id,

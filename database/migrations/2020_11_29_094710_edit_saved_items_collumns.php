@@ -33,10 +33,10 @@ class EditSavedItemsCollumns extends Migration
         Schema::table('saved_items', function (Blueprint $table) {
             $table->dropColumn('inventory');
             $table->unsignedBigInteger('inventory_id')->nullable();
-            $table->foreign('inventory_id')->references('id')->on('inventories');
+            $table->foreign('inventory_id')->references('id')->on('inventories')->ondelete('set null');
             $table->dropForeign(['saved_scenario_id']);
             $table->renameColumn('saved_scenario_id', 'saved_scene_id');
-            $table->foreign('saved_scene_id')->references('id')->on('scenes');
+            $table->foreign('saved_scene_id')->references('id')->on('scenes')->ondelete('cascade');
         });
     }
 }
